@@ -1,8 +1,9 @@
 # Data Structure Templates in C++
 
-These are C++ template implementations of common data structures I wrote while studying for CS163/CS202. Each structure has two versions — one using raw pointers and one using smart pointers — so I could compare the differences in memory management.
+These are C++ template implementations of common data structures. This repository was created to compile the results of my college studies about data structures and to familiarize with git and GitHub.
+Each structure has two versions. One uses raw pointers, and the other uses smart pointers to compare the memory overhead associated with smart pointers.
 
-All public methods return `int` instead of `void`. Functions that succeed return `true` (1) and functions that fail return `false` (0). Internal logic is all recursive.
+All public methods return `int` instead of `void`. Functions that succeed return `true` (1) and functions that fail return `false` (0). This is a rule of abstract data type. Internal logic is all recursive.
 
 ---
 
