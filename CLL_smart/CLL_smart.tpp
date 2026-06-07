@@ -1,5 +1,6 @@
 //This is template implementation file.
 #include <iostream>
+using std::make_shared;
 
 //==================== template class Node begin ====================
 
@@ -17,7 +18,7 @@ Node<TYPE>::Node(const Node<TYPE> & source) : data(source.data), next(nullptr) {
 
 //Returns reference to next shared_ptr
 template <typename TYPE>
-std::shared_ptr<Node<TYPE>> & Node<TYPE>::get_next()
+shared_ptr<Node<TYPE>> & Node<TYPE>::get_next()
 {
     return next;
 }
@@ -86,7 +87,7 @@ CLL<TYPE> & CLL<TYPE>::operator=(const CLL<TYPE> & source)
 template <typename TYPE>
 int CLL<TYPE>::insert(const TYPE & new_data)
 {
-    auto new_node = std::make_shared<Node<TYPE>>(new_data);
+    auto new_node = make_shared<Node<TYPE>>(new_data);
     auto rear_node = rear.lock();
 
     if (!rear_node)
@@ -131,7 +132,7 @@ TYPE CLL<TYPE>::retrieve(const TYPE & target_data) const
 
 //Recursively resets nodes from tail to head, releasing each one cleanly
 template <typename TYPE>
-int CLL<TYPE>::clear(std::shared_ptr<Node<TYPE>> & current)
+int CLL<TYPE>::clear(shared_ptr<Node<TYPE>> & current)
 {
     if (!current)
         return true;
@@ -144,7 +145,7 @@ int CLL<TYPE>::clear(std::shared_ptr<Node<TYPE>> & current)
 
 //Recursively inserts each node of the source chain in order
 template <typename TYPE>
-int CLL<TYPE>::copy(std::shared_ptr<Node<TYPE>> current)
+int CLL<TYPE>::copy(shared_ptr<Node<TYPE>> current)
 {
     if (!current)
         return true;
@@ -155,7 +156,7 @@ int CLL<TYPE>::copy(std::shared_ptr<Node<TYPE>> current)
 
 //Recursively displays each node then advances to the next
 template <typename TYPE>
-int CLL<TYPE>::display(std::shared_ptr<Node<TYPE>> current) const
+int CLL<TYPE>::display(shared_ptr<Node<TYPE>> current) const
 {
     if (!current)
         return true;
@@ -166,8 +167,8 @@ int CLL<TYPE>::display(std::shared_ptr<Node<TYPE>> current) const
 //Recursively searches for target_data; unlinks the matching node and updates rear if needed.
 //prev carries the preceding shared_ptr so that rear can be stepped back on rear removal.
 template <typename TYPE>
-int CLL<TYPE>::remove(std::shared_ptr<Node<TYPE>> & current,
-                      std::shared_ptr<Node<TYPE>>   prev,
+int CLL<TYPE>::remove(shared_ptr<Node<TYPE>> & current,
+                      shared_ptr<Node<TYPE>>   prev,
                       const TYPE & target_data)
 {
     if (!current)
@@ -192,7 +193,7 @@ int CLL<TYPE>::remove(std::shared_ptr<Node<TYPE>> & current,
 
 //Recursively searches for target_data; throws if the end is reached without a match
 template <typename TYPE>
-TYPE CLL<TYPE>::retrieve(std::shared_ptr<Node<TYPE>> current,
+TYPE CLL<TYPE>::retrieve(shared_ptr<Node<TYPE>> current,
                          const TYPE & target_data) const
 {
     if (!current)

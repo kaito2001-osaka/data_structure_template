@@ -9,6 +9,9 @@
 
 #include <memory>
 
+using std::shared_ptr;
+using std::weak_ptr;
+
 template <typename TYPE>
 class Node
 {
@@ -16,13 +19,13 @@ class Node
         Node();
         Node(const TYPE & source);
         Node(const Node & source);
-        std::shared_ptr<Node<TYPE>> & get_next();
+        shared_ptr<Node<TYPE>> & get_next();
         TYPE get_data() const;
         int display() const;
         bool operator==(const TYPE & to_comp);
     private:
         TYPE data;
-        std::shared_ptr<Node<TYPE>> next;
+        shared_ptr<Node<TYPE>> next;
 };
 
 template <typename TYPE>
@@ -38,13 +41,13 @@ class CLL
         int display() const;
         TYPE retrieve(const TYPE & target_data) const;
     private:
-        std::shared_ptr<Node<TYPE>> head;
-        std::weak_ptr<Node<TYPE>> rear;
-        int clear(std::shared_ptr<Node<TYPE>> & current);
-        int copy(std::shared_ptr<Node<TYPE>> current);
-        int display(std::shared_ptr<Node<TYPE>> current) const;
-        int remove(std::shared_ptr<Node<TYPE>> & current, std::shared_ptr<Node<TYPE>> prev, const TYPE & target_data);
-        TYPE retrieve(std::shared_ptr<Node<TYPE>> current, const TYPE & target_data) const;
+        shared_ptr<Node<TYPE>> head;
+        weak_ptr<Node<TYPE>> rear;
+        int clear(shared_ptr<Node<TYPE>> & current);
+        int copy(shared_ptr<Node<TYPE>> current);
+        int display(shared_ptr<Node<TYPE>> current) const;
+        int remove(shared_ptr<Node<TYPE>> & current, shared_ptr<Node<TYPE>> prev, const TYPE & target_data);
+        TYPE retrieve(shared_ptr<Node<TYPE>> current, const TYPE & target_data) const;
 };
 
 #include "CLL_smart.tpp"
