@@ -1,5 +1,7 @@
 //This is template implementation file.
 #include <iostream>
+using std::move;
+using std::make_shared;
 
 //==================== template class Node begin ====================
 
@@ -146,7 +148,7 @@ int DLL<TYPE>::remove(shared_ptr<Node<TYPE>> & node, const TYPE & target_data)
     {
         weak_ptr<Node<TYPE>> saved_prev = node->get_previous();  //Save back-link of deleted node
 
-        node = std::move(node->get_next());                           //Destroy current node; node now points to successor
+        node = move(node->get_next());                           //Destroy current node; node now points to successor
 
         if (node)
             node->get_previous() = saved_prev;                        //Fix successor's back-link
@@ -170,7 +172,7 @@ int DLL<TYPE>::copy(shared_ptr<Node<TYPE>> & dest, const shared_ptr<Node<TYPE>> 
         return true;
     }
 
-    dest = std::make_shared<Node<TYPE>>(source->get_data());
+    dest = make_shared<Node<TYPE>>(source->get_data());
     dest->get_previous() = prev;
 
     return copy(dest->get_next(), source->get_next(), dest);
@@ -182,7 +184,7 @@ int DLL<TYPE>::insert(shared_ptr<Node<TYPE>> & node, const TYPE & new_data, shar
 {
     if (!node)
     {
-        node = std::make_shared<Node<TYPE>>(new_data);
+        node = make_shared<Node<TYPE>>(new_data);
         node->get_previous() = prev;
         tail = node;
         return true;
