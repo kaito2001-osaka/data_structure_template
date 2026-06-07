@@ -2,6 +2,7 @@
 //This version uses smart pointer.
 
 #include <memory>
+using std::unique_ptr;
 
 template <typename TYPE>
 class Node

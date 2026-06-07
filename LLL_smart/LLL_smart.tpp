@@ -1,5 +1,6 @@
 //This is template implementation file.
 #include <iostream>
+using std::make_unique;
 
 //==================== template class Node begin ====================
 
@@ -17,7 +18,7 @@ Node<TYPE>::Node(const Node<TYPE> & source):data(source.data), next(nullptr)  {}
 
 //Returns reference to next unique_ptr
 template <typename TYPE>
-std::unique_ptr<Node<TYPE>> & Node<TYPE>::get_next()
+unique_ptr<Node<TYPE>> & Node<TYPE>::get_next()
 {
     return next;
 }
@@ -99,7 +100,7 @@ int LLL<TYPE>::insert(const TYPE & new_data)
 
 //Recursively deletes every node from head to tail
 template <typename TYPE>
-int LLL<TYPE>::clear(std::unique_ptr<Node<TYPE>> & head)
+int LLL<TYPE>::clear(unique_ptr<Node<TYPE>> & head)
 {
     if (!head)
     {
@@ -115,7 +116,7 @@ int LLL<TYPE>::clear(std::unique_ptr<Node<TYPE>> & head)
 
 //Recursively displays each node then advances to the next
 template <typename TYPE>
-int LLL<TYPE>::display(const std::unique_ptr<Node<TYPE>> & node) const
+int LLL<TYPE>::display(const unique_ptr<Node<TYPE>> & node) const
 {
     if (!node)
     {
@@ -134,7 +135,7 @@ int LLL<TYPE>::remove(const TYPE & target_data)
 
 //Recursively searches for data; unlinks and deletes the matching node
 template <typename TYPE>
-int LLL<TYPE>::remove(std::unique_ptr<Node<TYPE>> & head, const TYPE & target_data)
+int LLL<TYPE>::remove(unique_ptr<Node<TYPE>> & head, const TYPE & target_data)
 {
     //Base case: No node
     if (!head)
@@ -155,7 +156,7 @@ int LLL<TYPE>::remove(std::unique_ptr<Node<TYPE>> & head, const TYPE & target_da
 
 //Recursively deep-copies source chain into dest
 template <typename TYPE>
-int LLL<TYPE>::copy(std::unique_ptr<Node<TYPE>> & dest, const std::unique_ptr<Node<TYPE>> & source)
+int LLL<TYPE>::copy(unique_ptr<Node<TYPE>> & dest, const unique_ptr<Node<TYPE>> & source)
 {
     if (!source)
     {
@@ -163,18 +164,18 @@ int LLL<TYPE>::copy(std::unique_ptr<Node<TYPE>> & dest, const std::unique_ptr<No
         return true;
     }
 
-    dest = std::make_unique<Node<TYPE>>(source->get_data());
+    dest = make_unique<Node<TYPE>>(source->get_data());
 
     return copy(dest->get_next(), source->get_next());
 }
 
 //Recursively walks to the end of the list and appends a new node
 template <typename TYPE>
-int LLL<TYPE>::insert(std::unique_ptr<Node<TYPE>> & head, const TYPE & new_data)
+int LLL<TYPE>::insert(unique_ptr<Node<TYPE>> & head, const TYPE & new_data)
 {
     if (!head)
     {
-        head = std::make_unique<Node<TYPE>>(new_data);
+        head = make_unique<Node<TYPE>>(new_data);
         return true;
     }
     return insert(head->get_next(), new_data);
@@ -188,11 +189,11 @@ TYPE LLL<TYPE>::retrieve(const TYPE & target_data) const
     if (!head)
         throw "There is no node...";
 
-    return retrieve(const_cast<std::unique_ptr<Node<TYPE>>&>(head), target_data);
+    return retrieve(const_cast<unique_ptr<Node<TYPE>>&>(head), target_data);
 }
 //Recursive function for retrieve()
 template <typename TYPE>
-TYPE LLL<TYPE>::retrieve(std::unique_ptr<Node<TYPE>> & head, const TYPE & target_data) const
+TYPE LLL<TYPE>::retrieve(unique_ptr<Node<TYPE>> & head, const TYPE & target_data) const
 {
     //Base Case: Last Node
     if (head -> get_next() == nullptr)
