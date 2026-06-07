@@ -17,14 +17,14 @@ Node<TYPE>::Node(const Node<TYPE> & source) : data(source.data) {}
 
 //Returns reference to next shared_ptr
 template <typename TYPE>
-std::shared_ptr<Node<TYPE>> & Node<TYPE>::get_next()
+shared_ptr<Node<TYPE>> & Node<TYPE>::get_next()
 {
     return next;
 }
 
 //Returns reference to previous weak_ptr
 template <typename TYPE>
-std::weak_ptr<Node<TYPE>> & Node<TYPE>::get_previous()
+weak_ptr<Node<TYPE>> & Node<TYPE>::get_previous()
 {
     return previous;
 }
@@ -107,7 +107,7 @@ int DLL<TYPE>::insert(const TYPE & new_data)
 
 //Recursively deletes every node from head to tail
 template <typename TYPE>
-int DLL<TYPE>::clear(std::shared_ptr<Node<TYPE>> & node)
+int DLL<TYPE>::clear(shared_ptr<Node<TYPE>> & node)
 {
     if (!node)
         return true;
@@ -120,7 +120,7 @@ int DLL<TYPE>::clear(std::shared_ptr<Node<TYPE>> & node)
 
 //Recursively displays each node then advances to the next
 template <typename TYPE>
-int DLL<TYPE>::display(const std::shared_ptr<Node<TYPE>> & node) const
+int DLL<TYPE>::display(const shared_ptr<Node<TYPE>> & node) const
 {
     if (!node)
         return true;
@@ -137,14 +137,14 @@ int DLL<TYPE>::remove(const TYPE & target_data)
 
 //Recursively searches for data; unlinks and deletes the matching node, fixing the neighbouring previous pointer
 template <typename TYPE>
-int DLL<TYPE>::remove(std::shared_ptr<Node<TYPE>> & node, const TYPE & target_data)
+int DLL<TYPE>::remove(shared_ptr<Node<TYPE>> & node, const TYPE & target_data)
 {
     if (!node)
         return false;
 
     if (*node == target_data)
     {
-        std::weak_ptr<Node<TYPE>> saved_prev = node->get_previous();  //Save back-link of deleted node
+        weak_ptr<Node<TYPE>> saved_prev = node->get_previous();  //Save back-link of deleted node
 
         node = std::move(node->get_next());                           //Destroy current node; node now points to successor
 
@@ -161,7 +161,7 @@ int DLL<TYPE>::remove(std::shared_ptr<Node<TYPE>> & node, const TYPE & target_da
 
 //Recursively deep-copies source chain into dest and sets previous pointers; updates tail at the end
 template <typename TYPE>
-int DLL<TYPE>::copy(std::shared_ptr<Node<TYPE>> & dest, const std::shared_ptr<Node<TYPE>> & source, std::shared_ptr<Node<TYPE>> prev)
+int DLL<TYPE>::copy(shared_ptr<Node<TYPE>> & dest, const shared_ptr<Node<TYPE>> & source, shared_ptr<Node<TYPE>> prev)
 {
     if (!source)
     {
@@ -178,7 +178,7 @@ int DLL<TYPE>::copy(std::shared_ptr<Node<TYPE>> & dest, const std::shared_ptr<No
 
 //Recursively walks to the end of the list and appends a new node, setting its previous pointer
 template <typename TYPE>
-int DLL<TYPE>::insert(std::shared_ptr<Node<TYPE>> & node, const TYPE & new_data, std::shared_ptr<Node<TYPE>> prev)
+int DLL<TYPE>::insert(shared_ptr<Node<TYPE>> & node, const TYPE & new_data, shared_ptr<Node<TYPE>> prev)
 {
     if (!node)
     {
@@ -204,7 +204,7 @@ TYPE DLL<TYPE>::retrieve(const TYPE & target_data) const
 
 //Recursive function for retrieve()
 template <typename TYPE>
-TYPE DLL<TYPE>::retrieve(const std::shared_ptr<Node<TYPE>> & node, const TYPE & target_data) const
+TYPE DLL<TYPE>::retrieve(const shared_ptr<Node<TYPE>> & node, const TYPE & target_data) const
 {
     if (!node->get_next())
     {

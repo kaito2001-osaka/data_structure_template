@@ -11,6 +11,9 @@
 
 #include <memory>
 
+using std::shared_ptr;
+using std::weak_ptr;
+
 template <typename TYPE>
 class Node
 {
@@ -18,15 +21,15 @@ class Node
         Node<TYPE>();
         Node<TYPE>(const TYPE & source);
         Node<TYPE>(const Node<TYPE> & source);
-        std::shared_ptr<Node<TYPE>> & get_next();
-        std::weak_ptr<Node<TYPE>>  & get_previous();
+        shared_ptr<Node<TYPE>> & get_next();
+        weak_ptr<Node<TYPE>>  & get_previous();
         TYPE get_data() const;
         int  display() const;
         bool operator==(const TYPE & to_comp);
     private:
         TYPE data;
-        std::shared_ptr<Node<TYPE>> next;
-        std::weak_ptr<Node<TYPE>>   previous;
+        shared_ptr<Node<TYPE>> next;
+        weak_ptr<Node<TYPE>>   previous;
 };
 
 template <typename TYPE>
@@ -43,15 +46,15 @@ class DLL
         TYPE retrieve(const TYPE & target_data) const;
 
     private:
-        std::shared_ptr<Node<TYPE>> head;
-        std::weak_ptr<Node<TYPE>>   tail;
+        shared_ptr<Node<TYPE>> head;
+        weak_ptr<Node<TYPE>>   tail;
 
-        int  display(const std::shared_ptr<Node<TYPE>> & node) const;
-        int  clear(std::shared_ptr<Node<TYPE>> & node);
-        int  copy(std::shared_ptr<Node<TYPE>> & dest, const std::shared_ptr<Node<TYPE>> & source, std::shared_ptr<Node<TYPE>> prev);
-        int  insert(std::shared_ptr<Node<TYPE>> & node, const TYPE & new_data, std::shared_ptr<Node<TYPE>> prev);
-        int  remove(std::shared_ptr<Node<TYPE>> & node, const TYPE & target_data);
-        TYPE retrieve(const std::shared_ptr<Node<TYPE>> & node, const TYPE & target_data) const;
+        int  display(const shared_ptr<Node<TYPE>> & node) const;
+        int  clear(shared_ptr<Node<TYPE>> & node);
+        int  copy(shared_ptr<Node<TYPE>> & dest, const shared_ptr<Node<TYPE>> & source, shared_ptr<Node<TYPE>> prev);
+        int  insert(shared_ptr<Node<TYPE>> & node, const TYPE & new_data, shared_ptr<Node<TYPE>> prev);
+        int  remove(shared_ptr<Node<TYPE>> & node, const TYPE & target_data);
+        TYPE retrieve(const shared_ptr<Node<TYPE>> & node, const TYPE & target_data) const;
 };
 
 #include "DLL_smart.tpp"
