@@ -39,7 +39,6 @@ class DLL
 		int display(Node<TYPE> * head) const;
 		int clear(Node<TYPE> * head);
 		int copy(Node<TYPE> * & dest, Node<TYPE> * source, Node<TYPE> * prev);
-		int insert(Node<TYPE> * & head, const TYPE & new_data, Node<TYPE> * prev);
 		int remove(Node<TYPE> * & head, const TYPE & target_data);
         TYPE retrieve(Node<TYPE> * head, const TYPE & target_data) const;
 };

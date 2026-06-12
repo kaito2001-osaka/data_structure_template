@@ -52,7 +52,6 @@ class DLL
         int  display(const shared_ptr<Node<TYPE>> & node) const;
         int  clear(shared_ptr<Node<TYPE>> & node);
         int  copy(shared_ptr<Node<TYPE>> & dest, const shared_ptr<Node<TYPE>> & source, shared_ptr<Node<TYPE>> prev);
-        int  insert(shared_ptr<Node<TYPE>> & node, const TYPE & new_data, shared_ptr<Node<TYPE>> prev);
         int  remove(shared_ptr<Node<TYPE>> & node, const TYPE & target_data);
         TYPE retrieve(const shared_ptr<Node<TYPE>> & node, const TYPE & target_data) const;
 };

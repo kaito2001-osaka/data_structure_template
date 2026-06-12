@@ -100,11 +100,26 @@ int DLL<TYPE>::display() const
     return display(head);
 }
 
-//Public insert — delegates to private recursive insert
+//Appends a new node at the tail in O(1) using the tail handle
 template <typename TYPE>
 int DLL<TYPE>::insert(const TYPE & new_data)
 {
-    return insert(head, new_data, nullptr);
+    shared_ptr<Node<TYPE>> new_node = make_shared<Node<TYPE>>(new_data);
+
+    if (!head)                                  // empty list
+    {
+        head = new_node;
+    }
+    else
+    {
+        shared_ptr<Node<TYPE>> last = tail.lock();
+        new_node->get_previous() = last;        // back-link (weak_ptr) <- old tail
+        last->get_next() = new_node;            // old tail -> new node (forward ownership)
+    }
+
+    tail = new_node;                            // advance tail handle (weak_ptr)
+
+    return true;
 }
 
 //Recursively deletes every node from head to tail
@@ -176,21 +191,6 @@ int DLL<TYPE>::copy(shared_ptr<Node<TYPE>> & dest, const shared_ptr<Node<TYPE>> 
     dest->get_previous() = prev;
 
     return copy(dest->get_next(), source->get_next(), dest);
-}
-
-//Recursively walks to the end of the list and appends a new node, setting its previous pointer
-template <typename TYPE>
-int DLL<TYPE>::insert(shared_ptr<Node<TYPE>> & node, const TYPE & new_data, shared_ptr<Node<TYPE>> prev)
-{
-    if (!node)
-    {
-        node = make_shared<Node<TYPE>>(new_data);
-        node->get_previous() = prev;
-        tail = node;
-        return true;
-    }
-
-    return insert(node->get_next(), new_data, node);
 }
 
 //Retrieve the data that is same as target_data in argument.

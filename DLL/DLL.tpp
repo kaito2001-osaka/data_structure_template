@@ -112,11 +112,25 @@ int DLL<TYPE>::display() const
     return display(head);
 }
 
-//Public insert — delegates to private recursive insert
+//Appends a new node at the tail in O(1) using the tail pointer
 template <typename TYPE>
 int DLL<TYPE>::insert(const TYPE & new_data)
 {
-    return insert(head, new_data, nullptr);
+    Node<TYPE> * new_node = new Node<TYPE>(new_data);
+
+    if (!head)                              // empty list
+    {
+        head = new_node;
+    }
+    else
+    {
+        new_node->get_previous() = tail;    // new node <- old tail
+        tail->get_next() = new_node;        // old tail -> new node
+    }
+
+    tail = new_node;                        // advance tail
+
+    return true;
 }
 
 //Recursively deletes every node from head to tail
@@ -200,20 +214,6 @@ int DLL<TYPE>::copy(Node<TYPE> * & dest, Node<TYPE> * source, Node<TYPE> * prev)
     dest->get_previous() = prev;
 
     return copy(dest->get_next(), source->get_next(), dest);
-}
-
-//Recursively walks to the end of the list and appends a new node, setting its previous pointer
-template <typename TYPE>
-int DLL<TYPE>::insert(Node<TYPE> * & head, const TYPE & new_data, Node<TYPE> * prev)
-{
-    if (!head)
-    {
-        head = new Node<TYPE>(new_data);
-        head->get_previous() = prev;
-        tail = head;
-        return true;
-    }
-    return insert(head->get_next(), new_data, head);
 }
 
 //Retrieve the data that is same as target_data in argument.
