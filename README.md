@@ -17,7 +17,8 @@ data_structure_template/
 ├── DLL_smart/     Doubly Linked List (shared_ptr + weak_ptr)
 ├── CLL/           Circular Linked List (raw pointer)
 ├── CLL_smart/     Circular Linked List (shared_ptr + weak_ptr)
-└── BST/           Binary Search Tree (raw pointer)
+├── BST/           Binary Search Tree (raw pointer)
+└── BST_smart/     Binary Search Tree (unique_ptr)
 ```
 
 Each folder has a `.h` header, a `.tpp` implementation file.
@@ -62,13 +63,22 @@ The solution is to use `shared_ptr` for `head` (which owns the chain linearly) a
 
 ---
 
-## Binary Search Tree — BST
+## Binary Search Tree — BST / BST_smart
 
-> **🚧 Under construction 🚧**
+A tree where each node has up to two children, ordered so that everything in the left subtree is smaller than the node and everything in the right subtree is greater-or-equal (equal values go right, so duplicates are allowed). This ordering is what makes `insert`, `remove`, and `retrieve` recurse down a single path instead of scanning every node.
+
+Removal is the tricky operation and splits into three cases:
+- **Leaf** — just delete it.
+- **One child** — splice the node out and connect the parent straight to its only child.
+- **Two children** — the node is replaced by its *in-order successor* (the leftmost node of its right subtree). `detach_ios()` walks left to find and unlink that successor, which then takes over the removed node's position and inherits both subtrees. No data is copied — the successor node itself is moved into place.
+
+**BST** uses raw `Node*` pointers for `left` and `right`. The class owns `root` and deletes every node post-order in the destructor via `clear()`.
+
+**BST_smart** uses `unique_ptr<Node>` for `left` and `right`. A tree is a pure ownership hierarchy with no back-links, so `unique_ptr` is the natural fit — each subtree is freed automatically when its owning pointer is reset, and no node can ever have two owners. The raw-pointer removal logic translates cleanly to moves: the one-child case becomes `node = std::move(node->child)` (the old node is freed on assignment once its child has moved up), and `detach_ios()` returns ownership of the successor as a `unique_ptr` that the caller moves into place. Because `make_unique` is used, **BST_smart requires C++14** (`-std=c++14`), whereas the other versions does not matter.
 
 ---
 
 ## Notes
 
 - Templates are implemented in `.tpp` files and `#include`d at the bottom of `.h` files. This is one way to handle the template instantiation problem in C++ (the compiler needs to see both the declaration and the definition when it instantiates a template).
-- The `Node` class in each version overloads `operator==` so that `*node == data` works cleanly instead of needing a separate comparison method.
+- In the linked-list versions the `Node` class overloads `operator==` so that `*node == data` works cleanly instead of needing a separate comparison method. The BST `Node` instead exposes `equal_to()` and `greater_than()`, since ordering a tree needs an inequality test, not just equality.
