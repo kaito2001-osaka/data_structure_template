@@ -78,6 +78,27 @@ Removal is the tricky operation and splits into three cases:
 
 ---
 
+## Computational Complexity
+
+The smart-pointer version of each structure has the same complexity as its raw-pointer counterpart — smart pointers change *how memory is managed*, not *how many nodes an operation touches* — so they share a row below. Each cell shows **best case / worst case**.
+
+| Structure          | Insert          | Remove          | Retrieve        | Space |
+|--------------------|-----------------|-----------------|-----------------|-------|
+| LLL / LLL_smart    | O(n) / O(n)     | O(1) / O(n)     | O(1) / O(n)     | O(n)  |
+| DLL / DLL_smart    | O(1) / O(1)     | O(1) / O(n)     | O(1) / O(n)     | O(n)  |
+| CLL / CLL_smart    | O(1) / O(1)     | O(1) / O(n)     | O(1) / O(n)     | O(n)  |
+| BST / BST_smart    | O(log n) / O(n) | O(log n) / O(n) | O(log n) / O(n) | O(n)  |
+
+What the best / worst split means depends on the structure — for the lists it is *where the target sits*, for the BST it is *the shape of the tree*:
+
+- **LLL** appends by recursing to the tail, so insertion always walks the whole list — O(n) in both cases. Remove and retrieve are linear searches: O(1) when the target is the head, O(n) when it is the last node or absent.
+- **DLL** inserts in O(1) in every case by appending through the `tail` pointer (the smart version keeps `tail` as a `weak_ptr` for the same purpose), so no traversal is needed. Remove and retrieve scan from `head`, so they range from O(1) (head) to O(n) (tail / absent).
+- **CLL** inserts in O(1) in every case: `rear->next` is always the front, so appending is just relinking `rear` with no traversal. Remove and retrieve walk the circle, from O(1) (front) to O(n) (rear / absent).
+- **BST** complexity depends on tree height, so here best / worst tracks the **tree shape**: a balanced tree gives O(log n), but inserting already-sorted data degenerates the tree into a list and every operation becomes O(n). These templates do not self-balance.
+- **Space** is O(n) for every structure — one node per stored element. The recursive operations also consume call-stack space proportional to the recursion depth: O(n) for the lists (and a worst-case BST), O(log n) for a balanced BST — the same depth that drives the stack-overflow risk noted above.
+
+---
+
 ## Notes
 
 - Templates are implemented in `.tpp` files and `#include`d at the bottom of `.h` files. This is one way to handle the template instantiation problem in C++ (the compiler needs to see both the declaration and the definition when it instantiates a template).
