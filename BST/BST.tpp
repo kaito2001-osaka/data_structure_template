@@ -58,14 +58,6 @@ TYPE Node<TYPE>::get_data() const
     return data;
 }
 
-//Replaces the data stored in this node
-template <typename TYPE>
-int Node<TYPE>::set_data(const TYPE & new_data)
-{
-    data = new_data;
-    return true;
-}
-
 //Displays the data stored in this node
 template <typename TYPE>
 int Node<TYPE>::display() const

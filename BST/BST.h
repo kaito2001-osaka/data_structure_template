@@ -14,7 +14,6 @@ class Node
         bool greater_than(const TYPE & data) const;
         bool equal_to(const TYPE & data) const;
         TYPE get_data() const;
-        int set_data(const TYPE & new_data);
         int display() const;
 
     private:
