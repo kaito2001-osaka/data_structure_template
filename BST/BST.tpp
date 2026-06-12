@@ -186,17 +186,19 @@ int BST<TYPE>::remove(Node<TYPE> * & root, const TYPE & target_data)
     {
         delete root;
         root = nullptr;
+
         return true;
     }
 
     //Only right child
     if (!root->get_left())
     {
-        Node<TYPE> * temp  = root;
-        root               = root->get_right();
-        temp->get_right()  = nullptr;  //Unlink before delete
+        Node<TYPE> * temp = root;
+        root = root->get_right();
+        temp->get_right() = nullptr;  //Unlink before delete
         delete temp;
         temp = nullptr;
+
         return true;
     }
 
@@ -204,23 +206,27 @@ int BST<TYPE>::remove(Node<TYPE> * & root, const TYPE & target_data)
     if (!root->get_right())
     {
         Node<TYPE> * temp = root;
-        root              = root->get_left();
-        temp->get_left()  = nullptr;   //Unlink before delete
+        root = root->get_left();
+        temp->get_left() = nullptr;   //Unlink before delete
         delete temp;
         temp = nullptr;
+
         return true;
     }
 
     //Two children: detach the IOS node and move it into this node's position.
     //No data copy needed — the IOS node itself takes over, inheriting both subtrees.
     Node<TYPE> * ios = detach_ios(root->get_right());
-    ios->get_left()  = root->get_left();   //IOS inherits deleted node's left subtree
+    ios->get_left() = root->get_left();   //IOS inherits deleted node's left subtree
     ios->get_right() = root->get_right();  //IOS inherits deleted node's right subtree
                                             //(already updated by detach_ios)
-    root->get_left()  = nullptr;           //Unlink before delete
+
+    root->get_left() = nullptr;           //Unlink before delete
     root->get_right() = nullptr;           //Unlink before delete
+
     delete root;
     root = ios;
+
     return true;
 }
 
@@ -306,7 +312,7 @@ Node<TYPE> * BST<TYPE>::detach_ios(Node<TYPE> * & root)
     if (!root->get_left())
     {
         Node<TYPE> * ios = root;
-        root             = root->get_right();  //parent now links to IOS's right child
+        root = root->get_right();  //parent now links to IOS's right child
         ios->get_right() = nullptr;            //unlink IOS from the subtree
         return ios;
     }
