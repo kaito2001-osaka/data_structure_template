@@ -34,7 +34,7 @@ TYPE Node<TYPE>::get_data() const
 template <typename TYPE>
 int Node<TYPE>::display() const
 {
-    std::cout << '\n' << data << '\n';
+    std::cout << '\n' << data << std::endl;
 
     return true;
 }
